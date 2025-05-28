@@ -1,0 +1,186 @@
+<div class="clients-dashboard">
+  <div class="dashboard-header">
+    <div class="title-section">
+      <h2><i class="fas fa-users"></i> Gestion des clients</h2>
+      <p class="subtitle">Vue d'ensemble de tous les utilisateurs enregistrés</p>
+    </div>
+    
+  </div>
+
+  <div class="dashboard-stats">
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-user-plus"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ users.length }}</h3>
+        <p>Clients au total</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-user-check"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ getActiveUsers() }}</h3>
+        <p>Clients actifs</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">
+        <i class="fas fa-calendar-alt"></i>
+      </div>
+      <div class="stat-content">
+        <h3>{{ getNewUsersThisMonth() }}</h3>
+        <p>Nouveaux ce mois</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-container">
+    <div *ngIf="filteredUsers.length === 0" class="no-results">
+      <i class="fas fa-search"></i>
+      <p>Aucun client ne correspond à votre recherche</p>
+      <button class="btn reset-btn" (click)="clearSearch()">Réinitialiser</button>
+    </div>
+
+    <table *ngIf="filteredUsers.length > 0" class="client-table">
+      <thead>
+        <tr>
+          <th class="avatar-col">#</th>
+          <th (click)="sortUsers('name')">Nom <i class="fas fa-sort sort-icon"></i></th>
+          <th (click)="sortUsers('email')">Email <i class="fas fa-sort sort-icon"></i></th>
+          <th (click)="sortUsers('mobile')">Mobile <i class="fas fa-sort sort-icon"></i></th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of filteredUsers; let i = index" [ngClass]="{'highlighted': selectedUserId === user.id}">
+          <td class="avatar-col">
+            <div class="avatar" [ngStyle]="{'background-color': getAvatarColor(user.name)}">
+              {{ user.name.charAt(0).toUpperCase() }}
+            </div>
+          </td>
+          <td class="user-name">{{ user.name }}</td>
+          <td class="user-email"><a [href]="'mailto:' + user.email">{{ user.email }}</a></td>
+          <td class="user-mobile"><a [href]="'tel:' + user.mobile">{{ user.mobile }}</a></td>
+          <td><span class="status-badge" [ngClass]="{'active': user.statut === 'actif', 'inactive': user.statut === 'inactif'}">
+            {{ user.statut ? user.statut.charAt(0).toUpperCase() + user.statut.slice(1) : 'Actif' }}
+          </span></td>
+          <td class="actions-col">
+            <button class="action-btn view-btn" (click)="viewUserDetails(user)">
+              <i class="fas fa-eye"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pagination-container" *ngIf="totalPages > 1">
+      <div class="pagination">
+        <button [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)" class="page-nav">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <div class="page-numbers">
+          <button *ngFor="let page of getPageNumbers()" [ngClass]="{'active': currentPage === page}" (click)="changePage(page)" class="page-number">
+            {{ page }}
+          </button>
+        </div>
+        <button [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)" class="page-nav">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+      <div class="per-page-select">
+        <span>Afficher</span>
+        <select [(ngModel)]="itemsPerPage" (change)="updatePagination()">
+          <option [value]="5">5</option>
+          <option [value]="10">10</option>
+          <option [value]="25">25</option>
+          <option [value]="50">50</option>
+        </select>
+        <span>par page</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de détails utilisateur avec design amélioré -->
+  <div class="modal fade" id="userDetailsModal" tabindex="-1" aria-labelledby="userDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="userDetailsModalLabel">Détails du client</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body user-details-content" *ngIf="selectedUser">
+          <div class="user-profile-header">
+            <div class="user-avatar-large" [ngStyle]="{'background-color': getAvatarColor(selectedUser.name)}">
+              {{ selectedUser.name.charAt(0).toUpperCase() }}
+            </div>
+            <div class="user-main-info">
+              <h4>{{ selectedUser.name }}</h4>
+              <span class="user-role">{{ selectedUser.role === 'admin' ? 'Administrateur' : 'Client' }}</span>
+              <span class="status-badge" [ngClass]="{'active': selectedUser.statut === 'actif', 'inactive': selectedUser.statut === 'inactif'}">
+                {{ selectedUser.statut ? selectedUser.statut.charAt(0).toUpperCase() + selectedUser.statut.slice(1) : 'Actif' }}
+              </span>
+            </div>
+          </div>
+
+          <div class="user-info-sections">
+            <div class="info-section">
+              <h6><i class="fas fa-info-circle"></i> Informations de base</h6>
+              <div class="info-grid">
+                <div class="info-item">
+                  <span class="info-label">Email</span>
+                  <span class="info-value"><a href="mailto:{{ selectedUser.email }}">{{ selectedUser.email }}</a></span>
+                </div>
+                <div class="info-item">
+                  <span class="info-label">Téléphone</span>
+                  <span class="info-value"><a href="tel:{{ selectedUser.mobile }}">{{ selectedUser.mobile }}</a></span>
+                </div>
+                <div class="info-item" *ngIf="selectedUser.dateNaissance">
+                  <span class="info-label">Date de naissance</span>
+                  <span class="info-value">{{ selectedUser.dateNaissance | date: 'dd/MM/yyyy' }}</span>
+                </div>
+                <div class="info-item" *ngIf="selectedUser.genre">
+                  <span class="info-label">Genre</span>
+                  <span class="info-value">{{ selectedUser.genre === 'homme' ? 'Homme' : 'Femme' }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="info-section" *ngIf="selectedUser.adresse">
+              <h6><i class="fas fa-map-marker-alt"></i> Adresse</h6>
+              <p class="address-text">{{ selectedUser.adresse }}</p>
+            </div>
+
+            <div class="info-section">
+              <h6><i class="fas fa-user-shield"></i> Compte</h6>
+              <div class="info-grid">
+                <div class="info-item">
+                  <span class="info-label">Inscription</span>
+                  <span class="info-value">{{ selectedUser.dateInscription | date: 'dd/MM/yyyy' }}</span>
+                </div>
+                <div class="info-item" *ngIf="selectedUser.pieceIdentite">
+                  <span class="info-label">CIN</span>
+                  <span class="info-value">{{ selectedUser.pieceIdentite }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="info-section" *ngIf="selectedUser.favoris && selectedUser.favoris.length > 0">
+              <h6><i class="fas fa-heart"></i> Favoris</h6>
+              <div class="favorites-badge">
+                {{ selectedUser.favoris.length }} appartement(s)
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fermer</button>
+         
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

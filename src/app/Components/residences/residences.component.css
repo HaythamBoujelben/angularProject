@@ -1,0 +1,263 @@
+/* Main styling */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f0f2f5;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Typography */
+h1 {
+  color: #1a3a6b;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  position: relative;
+  padding-bottom: 0.75rem;
+}
+
+h1:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, #1a3a6b, #3498db);
+  border-radius: 2px;
+}
+
+h3 {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+h4.text-primary {
+  color: #1a3a6b !important;
+  font-weight: 600;
+  border-left: 4px solid #3498db;
+  padding-left: 10px;
+}
+
+h4.text-warning {
+  color: #f39c12 !important;
+  font-weight: 600;
+  border-left: 4px solid #f39c12;
+  padding-left: 10px;
+}
+
+/* Buttons */
+.btn {
+  border-radius: 6px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+  background-color: #3498db;
+  border-color: #3498db;
+}
+
+.btn-primary:hover {
+  background-color: #2980b9;
+  border-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-outline-info {
+  color: #17a2b8;
+  border-color: #17a2b8;
+}
+
+.btn-outline-info:hover {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.btn-outline-success {
+  color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-outline-success:hover {
+  background-color: #28a745;
+  color: white;
+}
+
+.btn-outline-warning {
+  color: #f39c12;
+  border-color: #f39c12;
+}
+
+.btn-outline-warning:hover {
+  background-color: #f39c12;
+  color: white;
+}
+
+.btn-outline-danger {
+  color: #e74c3c;
+  border-color: #e74c3c;
+}
+
+.btn-outline-danger:hover {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-outline-secondary {
+  color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-outline-secondary:hover {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-lg {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+}
+
+.btn-sm {
+  margin: 0.25rem;
+  font-size: 0.85rem;
+}
+
+/* Tables */
+.table-responsive {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.table-dark th {
+  background-color: #1a3a6b;
+  color: white;
+  font-weight: 600;
+  border: none;
+  padding: 1rem;
+}
+
+.table-hover tbody tr:hover {
+  background-color: rgba(52, 152, 219, 0.05);
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.table td {
+  padding: 1rem;
+  vertical-align: middle;
+}
+
+/* Badges */
+.badge {
+  padding: 0.5rem 0.75rem;
+  font-weight: 500;
+  border-radius: 4px;
+}
+
+.bg-success {
+  background-color: #28a745 !important;
+}
+
+.bg-danger {
+  background-color: #e74c3c !important;
+}
+
+.bg-warning {
+  background-color: #f39c12 !important;
+  color: white !important;
+}
+
+/* Cards */
+.card {
+  border: none;
+  transition: transform 0.3s, box-shadow 0.3s;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.card-img-top {
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.card-title {
+  font-weight: 600;
+  color: #1a3a6b;
+}
+
+/* Forms */
+.form-control, .form-select {
+  border-radius: 6px;
+  padding: 0.75rem;
+  border: 1px solid #e0e0e0;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+.form-label {
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+/* Map container */
+.ratio-16x9 {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .btn-sm {
+    margin-bottom: 0.5rem;
+  }
+  
+  .table-responsive {
+    font-size: 0.9rem;
+  }
+  
+  .container {
+    padding: 1rem;
+  }
+}
+
+/* Feature image */
+img.rounded {
+  object-fit: cover;
+  border: 2px solid #f8f9fa;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}

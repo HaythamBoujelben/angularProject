@@ -1,0 +1,155 @@
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <!-- Logo -->
+    <a class="navbar-brand" routerLink="/">
+      <i class="fas fa-home brand-icon"></i>
+      <span class="brand-text">MyRentals</span>
+    </a>
+
+    <!-- Bouton burger mobile -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <!-- Partie commune -->
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="getHomeLink()" routerLinkActive="active">
+            <i class="fas fa-home nav-icon"></i>
+            <span>Home</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/residences" routerLinkActive="active">
+            <i class="fas fa-building nav-icon"></i>
+            <span>Résidences</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/apartments" routerLinkActive="active">
+            <i class="fas fa-door-open nav-icon"></i>
+            <span>Appartements</span>
+          </a>
+        </li>
+
+        <!-- Partie admin uniquement -->
+        <ng-container *ngIf="isAdmin()">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/clients" routerLinkActive="active">
+              <i class="fas fa-users nav-icon"></i>
+              <span>Clients</span>
+            </a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="reservationDropdown" role="button" 
+              data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fas fa-calendar-alt nav-icon"></i>
+              <span>Réservations</span>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="reservationDropdown">
+              <li>
+                <a class="dropdown-item" routerLink="/reservations/en-cours">
+                  <i class="fas fa-clock dropdown-icon"></i>
+                  En cours
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" routerLink="/reservations/historique">
+                  <i class="fas fa-history dropdown-icon"></i>
+                  Historique
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ng-container>
+
+        <!-- Partie user uniquement -->
+        <ng-container *ngIf="isUser()">
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/reservation" routerLinkActive="active">
+              <i class="fas fa-calendar-check nav-icon"></i>
+              <span>Mes Réservations</span>
+            </a>
+          </li>
+        </ng-container>
+      </ul>
+
+      <!-- Authentification -->
+      <div class="auth-buttons">
+        <!-- Si non connecté -->
+        <a *ngIf="!isLoggedIn()" class="login-btn" routerLink="/login">
+          <i class="fas fa-sign-in-alt"></i>
+          <span>Connexion</span>
+        </a>
+
+        <!-- Si connecté -->
+        <div *ngIf="isLoggedIn()" class="user-menu">
+          <!-- Notification Bell -->
+          <div class="notification-bell me-3" *ngIf="isLoggedIn()">
+            <div class="dropdown">
+              <button class="btn btn-link position-relative" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fas fa-bell notification-icon"></i>
+                <span class="notification-badge" *ngIf="notifications.length">{{ notifications.length }}</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end notification-dropdown" aria-labelledby="notificationDropdown">
+                <div class="notification-header">
+                  <h6 class="m-0">Notifications</h6>
+                  <small *ngIf="notifications.length > 0">{{ notifications.length }} non lues</small>
+                </div>
+                <div class="notification-divider"></div>
+                <div class="notification-body">
+                  <li *ngIf="notifications.length === 0" class="dropdown-item text-muted">Aucune notification</li>
+                  <li *ngFor="let notif of notifications">
+                    <a class="dropdown-item notification-item" (click)="markNotificationAsRead(notif)">
+                      <i class="fas fa-info-circle notification-item-icon"></i>
+                      <div class="notification-content">
+                        <p class="notification-message">{{ notif.message }}</p>
+                        <!-- <small class="notification-time">{{ notif.createdAt | date:'short' }}</small> -->
+                      </div>
+                    </a>
+                  </li>
+                </div>
+              </ul>
+            </div>
+          </div>
+
+          <!-- User Profile Dropdown -->
+          <div class="dropdown user-dropdown">
+            <button class="btn btn-link dropdown-toggle user-btn" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+              <div class="user-avatar">
+                <i class="fas fa-user-circle"></i>
+              </div>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu" aria-labelledby="userDropdown">
+              <div class="user-info">
+                <div class="user-avatar-lg">
+                  <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="user-details">
+                  <h6 class="user-name">{{ getUserInfo()?.name || 'Utilisateur' }}</h6>
+                  <span class="user-role">{{ isAdmin() ? 'Administrateur' : 'Client' }}</span>
+                </div>
+              </div>
+              <div class="dropdown-divider"></div>
+              <li>
+                <a class="dropdown-item" routerLink="/profile">
+                  <i class="fas fa-user dropdown-icon"></i>
+                  <span>Mon Profil</span>
+                </a>
+              </li>
+            
+              <li>
+                <a class="dropdown-item logout-item" (click)="logout()">
+                  <i class="fas fa-sign-out-alt dropdown-icon"></i>
+                  <span>Déconnexion</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

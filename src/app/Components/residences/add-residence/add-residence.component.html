@@ -1,0 +1,76 @@
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3><i class="fas fa-building"></i> Ajouter une Résidence</h3>
+                </div>
+                <div class="card-body">
+                    <form [formGroup]="residence">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Nom :</label>
+                            <input class="form-control" formControlName="name" placeholder="Nom de la résidence">
+                            <div class="alert alert-danger mt-1 p-1" 
+                                 *ngIf="residence.get('name')!.invalid && (residence.get('name')!.touched || residence.get('name')!.dirty)">
+                                <div *ngIf="residence.get('name')!.hasError('required')">Le nom est obligatoire !</div>
+                                <div *ngIf="residence.get('name')!.hasError('minlength')">Minimum 3 caractères requis !</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Adresse :</label>
+                            <input class="form-control" formControlName="address" placeholder="Adresse complète">
+                            <div class="alert alert-danger mt-1 p-1" 
+                                 *ngIf="residence.get('address')!.invalid && (residence.get('address')!.touched || residence.get('address')!.dirty)">
+                                L'adresse est obligatoire !
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Image (URL) :</label>
+                            <input class="form-control" formControlName="image" placeholder="URL de l'image">
+                            <div class="alert alert-danger mt-1 p-1" 
+                                 *ngIf="residence.get('image')!.invalid && (residence.get('image')!.touched || residence.get('image')!.dirty)">
+                                L'image est obligatoire !
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Nombre d’étages :</label>
+                            <input type="number" class="form-control" formControlName="floor" placeholder="Ex: 5">
+                            <div class="alert alert-danger mt-1 p-1" 
+                                 *ngIf="residence.get('floor')!.invalid && (residence.get('floor')!.touched || residence.get('floor')!.dirty)">
+                                Nombre d'étages obligatoire !
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Nombre d’appartements :</label>
+                            <input type="number" class="form-control" formControlName="nbreAppartements" placeholder="Ex: 10">
+                            <div class="alert alert-danger mt-1 p-1" 
+                                 *ngIf="residence.get('nbreAppartements')!.invalid && (residence.get('nbreAppartements')!.touched || residence.get('nbreAppartements')!.dirty)">
+                                Nombre d'appartements obligatoire !
+                            </div>
+                        </div>
+                        
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Statut :</label>
+                            <select class="form-select" formControlName="status">
+                                <option>Disponible</option>
+                                <option>En Construction</option>
+                                <option>Vendu</option>
+                            </select>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="button" class="btn btn-success" (click)="add()" 
+                                    [disabled]="residence.invalid">
+                                <i class="fas fa-plus"></i> Ajouter Résidence
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

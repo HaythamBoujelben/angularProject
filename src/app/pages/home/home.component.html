@@ -1,0 +1,148 @@
+<div class="home-container">
+ 
+  <!-- Section Hero (En-tête avec image de fond et texte dynamique) -->
+  <header class="hero">
+    <div class="hero-content">
+      <h1>Découvrez votre futur chez vous</h1>
+      <p>Des résidences d'exception, pour une vie extraordinaire</p>
+      <input 
+        type="text" 
+        placeholder="Où souhaitez-vous vivre ?" 
+        [(ngModel)]="searchTerm" 
+        class="search-bar" />
+    </div>
+  </header>
+
+  <!-- Section des Résidences -->
+  <section class="residences-section">
+    <h2>Propriétés Exclusives</h2>
+    
+    <!-- Affichage de 3 résidences maximum -->
+    <div class="residences">
+      <div *ngFor="let residence of filteredResidences() | slice:0:3" class="residence-card">
+        <div class="card-image-container">
+          <img [src]="residence.image || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2070'" 
+               alt="{{ residence.name }}" class="residence-image"/>
+        </div>
+        <h3>{{ residence.name }}</h3>
+        <p>{{ residence.address }}</p>
+        <button class="view-btn" (click)="goToApartments(residence.id)">Explorer</button>
+      </div>
+    </div>
+    
+    <!-- Bouton Voir tout -->
+    <div class="text-center mt-4">
+      <button class="btn btn-primary" [routerLink]="['/residences']">Voir tout</button>
+    </div>
+  </section>
+  
+
+  <section class="about-section">
+    <div class="about-container">
+      <div class="about-image">
+        <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2070" alt="Notre équipe" />
+      </div>
+      <div class="about-text">
+        <h2>L'Excellence Immobilière</h2>
+        <p>
+          Bienvenue dans l'univers du luxe et du raffinement. Notre mission est d'offrir une expérience immobilière sans compromis, où chaque détail est pensé pour votre confort absolu.
+        </p>
+        <p>
+          Notre équipe d'experts immobiliers d'élite sélectionne méticuleusement les propriétés les plus prestigieuses pour répondre à vos exigences les plus élevées.
+          <strong>Votre satisfaction est notre signature.</strong>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section "Nos Services" -->
+  <section class="services-section">
+    <h2>Services Premium</h2>
+    <div class="services">
+      <div class="service-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/3774/3774299.png" alt="Service Personnalisé"/>
+        <h3>Service Personnalisé</h3>
+        <p>Une sélection exclusive de propriétés adaptées à votre style de vie et vos aspirations.</p>
+      </div>
+      <div class="service-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/5167/5167002.png" alt="Conciergerie Premium"/>
+        <h3>Conciergerie 24/7</h3>
+        <p>Notre équipe d'élite est à votre disposition à tout moment pour répondre à vos attentes.</p>
+      </div>
+      <div class="service-card">
+        <img src="https://cdn-icons-png.flaticon.com/512/2278/2278992.png" alt="Service Sécurisé"/>
+        <h3>Confidentialité Assurée</h3>
+        <p>Transactions discrètes et sécurisées pour une tranquillité d'esprit absolue.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section Témoignages -->
+  <section class="testimonials-section">
+    <h2>Témoignages Clients</h2>
+    <div class="testimonials">
+      <div class="testimonial-card">
+        <p>"Une expérience d'exception de bout en bout. L'équipe a dépassé toutes mes attentes avec un service impeccable et une attention irréprochable aux détails."</p>
+        <h3>Marie Dupont</h3>
+      </div>
+      <div class="testimonial-card">
+        <p>"En tant qu'investisseur exigeant, j'ai enfin trouvé un partenaire immobilier à la hauteur de mes ambitions. Professionnalisme et excellence à chaque étape."</p>
+        <h3>Jean Mercier</h3>
+      </div>
+    </div>
+  </section>
+
+<!-- Section "Nos Partenaires" -->
+<section class="partners-section">
+  <h2>Nos Partenaires de Confiance</h2>
+  <div class="partners">
+    <div class="partner-item">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="80" height="80" fill="#4A90E2">
+        <path d="M12,2C8.13,2,5,5.13,5,9c0,5.25,7,13,7,13s7-7.75,7-13C19,5.13,15.87,2,12,2z M12,11.5c-1.38,0-2.5-1.12-2.5-2.5s1.12-2.5,2.5-2.5s2.5,1.12,2.5,2.5S13.38,11.5,12,11.5z"/>
+      </svg>
+      <p>Partenariats avec des entreprises de loisirs et de tourisme locaux</p>
+    </div>
+    <div class="partner-item">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="80" height="80" fill="#FF6B6B">
+        <path d="M20,8h-3V6c0-1.1-0.9-2-2-2H9C7.9,4,7,4.9,7,6v2H4c-1.1,0-2,0.9-2,2v10h20V10C22,8.9,21.1,8,20,8z M9,6h6v2H9V6z M20,18H4v-3h16V18z M20,13H4v-3h3h10h3V13z"/>
+      </svg>
+      <p>Partenariats avec des entreprises de mobilier</p>
+    </div>
+    <div class="partner-item">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="80" height="80" fill="#50C878">
+        <path d="M19,9.3V4h-3v2.6L12,3L2,12h3v8h5v-6h4v6h5v-8h3L19,9.3z M10,10c0-1.1,0.9-2,2-2s2,0.9,2,2H10z"/>
+      </svg>
+      <p>Partenariats avec des agences de relocation</p>
+    </div>
+    <div class="partner-item">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="80" height="80" fill="#9D65C9">
+        <path d="M16,11h-1V3c0-1.1-0.9-2-2-2h-2C9.9,1,9,1.9,9,3v8H8c-1.1,0-2,0.9-2,2v9h12v-9C18,11.9,17.1,11,16,11z M9,3h6v8h-6V3z M16,20H8v-7h8V20z"/>
+        <path d="M12,17.5c0.83,0,1.5-0.67,1.5-1.5s-0.67-1.5-1.5-1.5s-1.5,0.67-1.5,1.5S11.17,17.5,12,17.5z"/>
+      </svg>
+      <p>Partenariats avec des entreprises de nettoyage et d'entretien</p>
+    </div>
+    <div class="partner-item">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="80" height="80" fill="#FF9A3C">
+        <path d="M17,11V3H7v8H3v10h18V11H17z M7,19H5v-6h2V19z M11,19H9v-6h2V19z M11,11H7V5h4V11z M15,19h-2v-6h2V19z M15,11h-4V5h4V11z M19,19h-2v-6h2V19z"/>
+      </svg>
+      <p>Partenariats avec des propriétaires d'appartements</p>
+    </div>
+    <div class="partner-item">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="80" height="80" fill="#5D9CEC">
+        <path d="M12,1L3,5v6c0,5.55,3.84,10.74,9,12c5.16-1.26,9-6.45,9-12V5L12,1z M19,11c0,1.85-0.51,3.65-1.38,5.21l-1.45-1.45c1.29-1.94,1.07-4.58-0.64-6.29c-1.95-1.95-5.12-1.95-7.07,0c-1.95,1.95-1.95,5.12,0,7.07c1.71,1.71,4.35,1.92,6.29,0.64l1.72,1.72c-1.19,1.42-2.73,2.51-4.47,3.04C7.98,19.69,5,15.52,5,11V6.3l7-3.11l7,3.11V11z M12,15c-1.66,0-3-1.34-3-3s1.34-3,3-3s3,1.34,3,3S13.66,15,12,15z"/>
+      </svg>
+      <p>Partenariats avec des services de conciergerie</p>
+    </div>
+  </div>
+</section>
+
+  <!-- Section "Contactez-nous" -->
+  <section class="contact-section">
+    <h2>Service Client Privilégié</h2>
+    <p>
+      Pour toute demande spécifique ou renseignement exclusif, notre équipe dédiée est à votre entière disposition par email à <strong>premium@location-appartements.com</strong> ou par téléphone au <strong>+33 1 23 45 67 89</strong>.
+    </p>
+  </section>
+
+
+</div>

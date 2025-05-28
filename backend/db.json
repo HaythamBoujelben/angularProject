@@ -1,0 +1,147 @@
+{
+  "residence": [
+    {
+      "id": "688e",
+      "name": "tttt",
+      "address": "sfax",
+      "image": "https://www.snitsud.com.tn/wp-content/uploads/2020/11/fini-F.jpg",
+      "status": "En Construction",
+      "floor": 5,
+      "nbreAppartements": 10
+    }
+  ],
+  "Apartment": [
+    {
+      "id": "1213",
+      "apartNum": "10",
+      "floorNum": "50",
+      "surface": "220",
+      "terrace": "oui",
+      "surfaceterrace": "50",
+      "category": "s+2",
+      "ResidenceId": "688e"
+    },
+    {
+      "id": "8737",
+      "apartNum": "7",
+      "floorNum": "3",
+      "surface": "452",
+      "terrace": "non",
+      "surfaceterrace": "",
+      "category": "s+3",
+      "ResidenceId": "688e"
+    },
+    {
+      "id": "674d",
+      "apartNum": "14",
+      "floorNum": "14",
+      "surface": "350",
+      "terrace": "non",
+      "surfaceterrace": "",
+      "category": "s+2",
+      "ResidenceId": "688e"
+    },
+    {
+      "id": "f4ed",
+      "apartNum": "100",
+      "floorNum": "100",
+      "surface": 400,
+      "terrace": "Non",
+      "surfaceterrace": 0,
+      "category": "S+2",
+      "ResidenceId": "688e"
+    }
+  ],
+  "users": [
+    {
+      "id": "e544",
+      "name": "eyaaaaa",
+      "email": "eya@gmail.com",
+      "password": "azerty",
+      "mobile": "50255113",
+      "role": "user"
+    },
+    {
+      "id": "18bd",
+      "name": "sirine",
+      "email": "sirinegouiaa4@gmail.com",
+      "password": "azerty",
+      "role": "admin"
+    },
+    {
+      "id": "cfae",
+      "name": "safa safa",
+      "email": "safa@gmail.com",
+      "password": "azerty",
+      "mobile": "22667722",
+      "role": "user"
+    },
+    {
+      "id": "b71e",
+      "name": "amine",
+      "email": "amine@gmail.com",
+      "password": "azerty",
+      "mobile": "12345678",
+      "role": "user"
+    },
+    {
+      "id": "3c27",
+      "name": "aziz",
+      "email": "aziz@gmail.com",
+      "password": "azerty",
+      "mobile": "56258123",
+      "role": "user",
+      "statut": "actif",
+      "genre": "homme",
+      "adresse": "sfax",
+      "dateNaissance": "2000-04-06",
+      "pieceIdentite": "11156842",
+      "photo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQanlasPgQjfGGU6anray6qKVVH-ZlTqmuTHw&s",
+      "dateInscription": "2025-04-11T15:34:48.746Z"
+    },
+    {
+      "id": "c348",
+      "name": "yesmine",
+      "email": "yesmine@gmail.com",
+      "password": "azerty",
+      "mobile": "98759023",
+      "role": "user",
+      "statut": "actif",
+      "genre": "femme",
+      "adresse": "tunisie",
+      "pieceIdentite": "11123548",
+      "dateInscription": "2025-04-11T15:44:14.740Z",
+      "photo": "assets/default-user-icon.png"
+    }
+  ],
+  "reservations": [
+    {
+      "id": 0,
+      "apartmentId": "1213",
+      "userId": "e544",
+      "dateReservation": "2025-04-20T23:10:25.551Z",
+      "status": "pending"
+    },
+    {
+      "id": 0,
+      "apartmentId": "8737",
+      "userId": "e544",
+      "dateReservation": "2025-04-20T23:11:17.889Z",
+      "status": "pending"
+    },
+    {
+      "id": 0,
+      "apartmentId": "f4ed",
+      "userId": "e544",
+      "dateReservation": "2025-04-20T23:12:34.407Z",
+      "status": "pending"
+    },
+    {
+      "id": 0,
+      "apartmentId": "1213",
+      "userId": "e544",
+      "dateReservation": "2025-04-20T23:13:00.379Z",
+      "status": "pending"
+    }
+  ]
+}

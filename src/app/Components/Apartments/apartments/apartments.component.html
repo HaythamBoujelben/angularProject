@@ -1,0 +1,230 @@
+<div class="container">
+  <!-- Bouton pour ajouter un appartement (visible uniquement pour les admins) -->
+  <div *ngIf="isAdmin" class="mb-4">
+    <app-add-apartment></app-add-apartment>
+  </div>
+
+  <div class="row">
+    <table class="table table-striped table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>Apart Num</th>
+          <th>Floor Num</th>
+          <th>Category</th>
+          <th>Résidence</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of apartments">
+          <td>{{ a.apartNum }}</td>
+          <td>{{ a.floorNum }}</td>
+          <td>{{ a.category }}</td>
+          <td>{{ getResidence(a.ResidenceId) }}</td>
+          <td>
+            <!-- Bouton visible uniquement pour les utilisateurs non-admin -->
+            <div *ngIf="!isAdmin" class="btn-group">
+              <button
+                class="btn btn-primary"
+                (click)="showDetails(a)"
+                data-bs-toggle="modal"
+                data-bs-target="#apartmentDetailsModal">
+                Détails
+              </button>
+              <button
+                *ngIf="isUser"
+                class="btn btn-success ms-2"
+                (click)="reserveApartment(a)">
+                Réserver
+              </button>
+            </div>
+
+            <!-- Bouton visible uniquement pour admin -->
+            <button
+              *ngIf="isAdmin"
+              class="btn btn-info"
+              (click)="showDetails(a)">
+              Voir détails
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Détails affichés directement pour l'admin -->
+    <div *ngIf="isAdmin && selectedApartment" class="card mt-4 shadow-sm border-0 rounded">
+      <div class="card-header bg-light d-flex justify-content-between align-items-center py-3">
+        <h4 class="m-0 fw-bold text-secondary">Détails de l'appartement (Admin)</h4>
+        <div>
+          <button class="btn btn-warning me-2" (click)="updateApartment()">
+            <i class="bi bi-pencil"></i> Modifier
+          </button>
+          <button class="btn btn-danger" (click)="deleteApartment(selectedApartment.id)">
+            <i class="bi bi-trash"></i> Supprimer
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <p class="mb-3"><span class="fw-bold text-secondary">Numéro:</span> <span class="ms-2">{{ selectedApartment.apartNum }}</span></p>
+            <p class="mb-3"><span class="fw-bold text-secondary">Étage:</span> <span class="ms-2">{{ selectedApartment.floorNum }}</span></p>
+            <p class="mb-3"><span class="fw-bold text-secondary">Surface:</span> <span class="ms-2">{{ selectedApartment.surface }} m²</span></p>
+            <p class="mb-3"><span class="fw-bold text-secondary">Terrasse:</span> <span class="ms-2">{{ selectedApartment.terrace }}</span></p>
+          </div>
+          <div class="col-md-6">
+            <p class="mb-3"><span class="fw-bold text-secondary">Surface Terrasse:</span> <span class="ms-2">{{ selectedApartment.surfaceterrace }} m²</span></p>
+            <p class="mb-3"><span class="fw-bold text-secondary">Catégorie:</span> <span class="ms-2">{{ selectedApartment.category }}</span></p>
+            <p class="mb-3"><span class="fw-bold text-secondary">Résidence:</span> <span class="ms-2">{{ getResidence(selectedApartment.ResidenceId) }}</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulaire d'édition d'appartement - Visible uniquement pour les admins -->
+    <div *ngIf="isAdmin && selectedApartment" class="card mt-4 shadow-sm border-0 rounded">
+      <div class="card-header bg-light py-3">
+        <h4 class="m-0 fw-bold text-success">Modifier les détails de l'appartement</h4>
+      </div>
+      <div class="card-body bg-light bg-opacity-25">
+        <form (ngSubmit)="updateApartment()" #editForm="ngForm">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="apartNum" class="form-label fw-bold text-secondary">Numéro Appartement</label>
+                <input
+                  type="text"
+                  class="form-control border-secondary"
+                  id="apartNum"
+                  [(ngModel)]="selectedApartment.apartNum"
+                  name="apartNum"
+                  required
+                  #apartNum="ngModel"
+                />
+                <div *ngIf="apartNum.invalid && apartNum.touched" class="alert alert-danger mt-1 py-1 px-2">
+                  Le numéro de l'appartement est requis.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="floorNum" class="form-label fw-bold text-secondary">Numéro de l'Étage</label>
+                <input
+                  type="text"
+                  class="form-control border-secondary"
+                  id="floorNum"
+                  [(ngModel)]="selectedApartment.floorNum"
+                  name="floorNum"
+                  required
+                  #floorNum="ngModel"
+                />
+                <div *ngIf="floorNum.invalid && floorNum.touched" class="alert alert-danger mt-1 py-1 px-2">
+                  L'étage est requis.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="surface" class="form-label fw-bold text-secondary">Surface (m²)</label>
+                <input
+                  type="number"
+                  class="form-control border-secondary"
+                  id="surface"
+                  [(ngModel)]="selectedApartment.surface"
+                  name="surface"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="terrace" class="form-label fw-bold text-secondary">Terrasse</label>
+                <select
+                  class="form-select border-secondary"
+                  id="terrace"
+                  [(ngModel)]="selectedApartment.terrace"
+                  name="terrace"
+                >
+                  <option value="Oui">Oui</option>
+                  <option value="Non">Non</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="surfaceterrace" class="form-label fw-bold text-secondary">Surface Terrasse (m²)</label>
+                <input
+                  type="number"
+                  class="form-control border-secondary"
+                  id="surfaceterrace"
+                  [(ngModel)]="selectedApartment.surfaceterrace"
+                  name="surfaceterrace"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="category" class="form-label fw-bold text-secondary">Catégorie</label>
+                <select
+                  class="form-select border-secondary"
+                  id="category"
+                  [(ngModel)]="selectedApartment.category"
+                  name="category"
+                  required
+                  #category="ngModel"
+                >
+                  <option value="" disabled>Sélectionner une catégorie</option>
+                  <option value="S+1">S+1</option>
+                  <option value="S+2">S+2</option>
+                  <option value="S+3">S+3</option>
+                </select>
+                <div *ngIf="category.invalid && category.touched" class="alert alert-danger mt-1 py-1 px-2">
+                  La catégorie est requise.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="residence" class="form-label fw-bold text-secondary">Résidence</label>
+            <select
+              class="form-select border-secondary"
+              id="residence"
+              [(ngModel)]="selectedApartment.ResidenceId"
+              name="residence"
+              required
+              #residence="ngModel"
+            >
+              <option value="" disabled>Sélectionner une résidence</option>
+              <option *ngFor="let res of residences" [value]="res.id">{{ res.name }}</option>
+            </select>
+            <div *ngIf="residence.invalid && residence.touched" class="alert alert-danger mt-1 py-1 px-2">
+              La résidence est requise.
+            </div>
+          </div>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+            <button type="button" class="btn btn-secondary me-md-2" (click)="selectedApartment = null">Annuler</button>
+            <button type="submit" class="btn btn-success" [disabled]="editForm.invalid">
+              <i class="bi bi-check-lg"></i> Enregistrer les modifications
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modale uniquement pour les utilisateurs simples -->
+    <div *ngIf="!isAdmin" class="modal fade" id="apartmentDetailsModal" tabindex="-1" aria-labelledby="apartmentDetailsModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="apartmentDetailsModalLabel">Détails de l'appartement</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+          </div>
+          <div class="modal-body">
+            <p><strong>Numéro :</strong> {{ selectedApartment?.apartNum }}</p>
+            <p><strong>Étage :</strong> {{ selectedApartment?.floorNum }}</p>
+            <p><strong>Surface :</strong> {{ selectedApartment?.surface }} m²</p>
+            <p><strong>Terrasse :</strong> {{ selectedApartment?.terrace }}</p>
+            <p><strong>Surface de la terrasse :</strong> {{ selectedApartment?.surfaceterrace }} m²</p>
+            <p><strong>Catégorie :</strong> {{ selectedApartment?.category }}</p>
+            <p><strong>Résidence :</strong> {{ getResidence(selectedApartment?.ResidenceId) }}</p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-success" (click)="reserveApartment()">Réserver</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

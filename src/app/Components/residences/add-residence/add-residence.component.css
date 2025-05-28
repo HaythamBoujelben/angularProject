@@ -1,0 +1,51 @@
+/* Import d'une belle police Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Style des labels */
+.form-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Style des inputs */
+.form-control, .form-select {
+    font-size: 1rem;
+    font-weight: 400;
+    border-radius: 8px;
+    padding: 10px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Changement de couleur au focus */
+.form-control:focus, .form-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Style des boutons */
+.btn-success {
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 12px 24px;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Effet au survol */
+.btn-success:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+/* Style des alertes d'erreur */
+.alert-danger {
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 8px;
+    border-radius: 6px;
+}

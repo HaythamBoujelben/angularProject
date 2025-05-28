@@ -1,0 +1,118 @@
+<div class="profile-page-background">
+  <div class="profile-container">
+    <div class="profile-card">
+      <div class="profile-header">
+        <div class="avatar">
+          <img *ngIf="user.photo" [src]="user.photo" alt="Photo de profil" />
+          <span *ngIf="!user.photo">{{ getInitials() }}</span>
+        </div>
+        
+        <h1>{{ user.name || 'Profil Utilisateur' }}</h1>
+      </div>
+      
+      <div class="profile-content" *ngIf="!editMode">
+        <div class="info-group">
+          <div class="framed-info-item">
+            <div class="frame-label">Nom</div>
+            <div class="frame-value">{{ user.name || 'Non renseigné' }}</div>
+          </div>
+          
+          <div class="framed-info-item">
+            <div class="frame-label">Email</div>
+            <div class="frame-value">{{ user.email || 'Non renseigné' }}</div>
+          </div>
+          
+          <div class="framed-info-item">
+            <div class="frame-label">Téléphone</div>
+            <div class="frame-value">{{ user.mobile || 'Non renseigné' }}</div>
+          </div>
+        </div>
+
+        <div class="info-group">
+          <div class="framed-info-item" *ngIf="user.adresse">
+            <div class="frame-label">Adresse</div>
+            <div class="frame-value">{{ user.adresse }}</div>
+          </div>
+          
+          <div class="framed-info-item" *ngIf="user.genre">
+            <div class="frame-label">Genre</div>
+            <div class="frame-value">{{ user.genre === 'homme' ? 'Homme' : 'Femme' }}</div>
+          </div>
+          
+          <div class="framed-info-item" *ngIf="user.dateNaissance">
+            <div class="frame-label">Date de naissance</div>
+            <div class="frame-value">{{ user.dateNaissance | date:'dd/MM/yyyy' }}</div>
+          </div>
+        </div>
+        
+        <div class="profile-actions">
+          <button class="btn btn-primary" (click)="editMode = true">
+            <span class="btn-icon">✏️</span>
+            Modifier le profil
+          </button>
+        </div>
+      </div>
+      
+      <div class="profile-content edit-mode" *ngIf="editMode">
+        <form (ngSubmit)="saveChanges()">
+          <div class="framed-form-group">
+            <div class="frame-label">Nom</div>
+            <input id="name" [(ngModel)]="user.name" name="name" required placeholder="Votre nom">
+          </div>
+          
+          <div class="framed-form-group">
+            <div class="frame-label">Email</div>
+            <input id="email" type="email" [(ngModel)]="user.email" name="email" required placeholder="exemple@email.com">
+          </div>
+          
+          <div class="framed-form-group">
+            <div class="frame-label">Téléphone</div>
+            <input id="mobile" type="tel" [(ngModel)]="user.mobile" name="mobile" required placeholder="Votre numéro de téléphone">
+          </div>
+
+          <div class="framed-form-group">
+            <div class="frame-label">Adresse</div>
+            <input id="adresse" [(ngModel)]="user.adresse" name="adresse" placeholder="Votre adresse complète">
+          </div>
+          
+          <div class="framed-form-group">
+            <div class="frame-label">Genre</div>
+            <select id="genre" [(ngModel)]="user.genre" name="genre">
+              <option value="">-- Sélectionnez --</option>
+              <option [value]="'homme'">Homme</option>
+              <option [value]="'femme'">Femme</option>
+            </select>
+          </div>
+          
+          <div class="framed-form-group">
+            <div class="frame-label">Date de naissance</div>
+            <input id="dateNaissance" type="date" [(ngModel)]="user.dateNaissance" name="dateNaissance">
+          </div>
+          
+          <div class="framed-form-group">
+            <div class="frame-label">Photo de profil (URL)</div>
+            <input id="photo" type="text" [(ngModel)]="user.photo" name="photo" placeholder="URL de votre photo">
+          </div>
+          
+          <div class="alert alert-danger" *ngIf="error">{{ error }}</div>
+          
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" (click)="cancelEdit()">
+              <span class="btn-icon">✕</span>
+              Annuler
+            </button>
+            
+            <button type="submit" class="btn btn-success" [disabled]="saving" [ngClass]="{'saving': saving}">
+              <span class="btn-icon">{{ saving ? '⏳' : '✓' }}</span>
+              {{ saving ? 'Enregistrement...' : 'Enregistrer' }}
+            </button>
+          </div>
+        </form>
+      </div>
+      
+      <div class="alert alert-success" *ngIf="!error && !editMode && !saving && originalUser !== user">
+        Profil mis à jour avec succès !
+      </div>
+    </div>
+  </div>
+</div>

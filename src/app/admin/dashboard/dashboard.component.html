@@ -1,0 +1,41 @@
+<div class="container mt-4">
+    <h1 class="text-center text-primary fw-bold mb-4">📊 Tableau de bord Admin</h1>
+  
+    <!-- Statistiques -->
+    <div class="row text-center mb-4">
+      <div class="col-md-4">
+        <div class="card shadow-sm p-3">
+          <h5>🏢 Résidences</h5>
+          <h2 class="text-primary">{{ totalResidences }}</h2>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card shadow-sm p-3">
+          <h5>🏠 Appartements</h5>
+          <h2 class="text-success">{{ totalAppartements }}</h2>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card shadow-sm p-3">
+          <h5>👥 Clients</h5>
+          <h2 class="text-danger">{{ totalClients }}</h2>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Résidences populaires -->
+    <h4 class="mt-4 mb-3">🏆 Top Résidences</h4>
+    <ul class="list-group mb-4">
+      <li class="list-group-item" *ngFor="let r of topResidences">
+        {{ r.name }} — {{ r.apartmentCount }} appartements
+      </li>
+    </ul>
+  
+    <!-- Liens vers les modules -->
+    <div class="d-flex justify-content-around">
+      <a routerLink="/residences" class="btn btn-outline-primary">Gérer Résidences</a>
+      <a routerLink="/apartments" class="btn btn-outline-success">Gérer Appartements</a>
+      <a routerLink="/clients" class="btn btn-outline-danger">Gérer Clients</a>
+    </div>
+  </div>
+  

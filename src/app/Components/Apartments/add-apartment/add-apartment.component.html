@@ -1,0 +1,115 @@
+<div class="container mt-4" *ngIf="isAdmin">
+    <div class="card shadow-sm border-0 rounded">
+      <div class="card-header bg-light py-3">
+        <h4 class="m-0 fw-bold text-success">Ajouter un nouvel appartement</h4>
+      </div>
+      <div class="card-body bg-light bg-opacity-25">
+        <form [formGroup]="apartmentForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="apartNum" class="form-label fw-bold text-secondary">Numéro Appartement</label>
+                <input
+                  type="text"
+                  class="form-control border-secondary"
+                  id="apartNum"
+                  formControlName="apartNum"
+                  [ngClass]="{'is-invalid': apartmentForm.get('apartNum')?.invalid && apartmentForm.get('apartNum')?.touched}"
+                />
+                <div *ngIf="apartmentForm.get('apartNum')?.invalid && apartmentForm.get('apartNum')?.touched" class="invalid-feedback">
+                  Le numéro de l'appartement est requis.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="floorNum" class="form-label fw-bold text-secondary">Numéro de l'Étage</label>
+                <input
+                  type="text"
+                  class="form-control border-secondary"
+                  id="floorNum"
+                  formControlName="floorNum"
+                  [ngClass]="{'is-invalid': apartmentForm.get('floorNum')?.invalid && apartmentForm.get('floorNum')?.touched}"
+                />
+                <div *ngIf="apartmentForm.get('floorNum')?.invalid && apartmentForm.get('floorNum')?.touched" class="invalid-feedback">
+                  L'étage est requis.
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="surface" class="form-label fw-bold text-secondary">Surface (m²)</label>
+                <input
+                  type="number"
+                  class="form-control border-secondary"
+                  id="surface"
+                  formControlName="surface"
+                  [ngClass]="{'is-invalid': apartmentForm.get('surface')?.invalid && apartmentForm.get('surface')?.touched}"
+                />
+                <div *ngIf="apartmentForm.get('surface')?.invalid && apartmentForm.get('surface')?.touched" class="invalid-feedback">
+                  La surface doit être supérieure à 0.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="terrace" class="form-label fw-bold text-secondary">Terrasse</label>
+                <select
+                  class="form-select border-secondary"
+                  id="terrace"
+                  formControlName="terrace"
+                >
+                  <option value="Oui">Oui</option>
+                  <option value="Non">Non</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="surfaceterrace" class="form-label fw-bold text-secondary">Surface Terrasse (m²)</label>
+                <input
+                  type="number"
+                  class="form-control border-secondary"
+                  id="surfaceterrace"
+                  formControlName="surfaceterrace"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="category" class="form-label fw-bold text-secondary">Catégorie</label>
+                <select
+                  class="form-select border-secondary"
+                  id="category"
+                  formControlName="category"
+                  [ngClass]="{'is-invalid': apartmentForm.get('category')?.invalid && apartmentForm.get('category')?.touched}"
+                >
+                  <option value="" disabled selected>Sélectionner une catégorie</option>
+                  <option value="S+1">S+1</option>
+                  <option value="S+2">S+2</option>
+                  <option value="S+3">S+3</option>
+                </select>
+                <div *ngIf="apartmentForm.get('category')?.invalid && apartmentForm.get('category')?.touched" class="invalid-feedback">
+                  La catégorie est requise.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="residence" class="form-label fw-bold text-secondary">Résidence</label>
+            <select
+              class="form-select border-secondary"
+              id="residence"
+              formControlName="ResidenceId"
+              [ngClass]="{'is-invalid': apartmentForm.get('ResidenceId')?.invalid && apartmentForm.get('ResidenceId')?.touched}"
+            >
+              <option value="" disabled selected>Sélectionner une résidence</option>
+              <option *ngFor="let res of residences" [value]="res.id">{{ res.name }}</option>
+            </select>
+            <div *ngIf="apartmentForm.get('ResidenceId')?.invalid && apartmentForm.get('ResidenceId')?.touched" class="invalid-feedback">
+              La résidence est requise.
+            </div>
+          </div>
+          <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+            <button type="button" class="btn btn-secondary me-md-2" (click)="apartmentForm.reset({ terrace: 'Non', surfaceterrace: 0 })">Annuler</button>
+            <button type="submit" class="btn btn-success" [disabled]="apartmentForm.invalid">
+              <i class="bi bi-plus-lg"></i> Ajouter l'appartement
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

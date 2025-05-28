@@ -1,0 +1,176 @@
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<div class="container mt-4">
+  <h1 class="text-center text-primary fw-bold mb-4">{{ title }}</h1>
+
+  <!-- Vérification du rôle et affichage dynamique -->
+  <div *ngIf="userRole === 'admin'">
+    <!-- Interface du dashboard pour l'admin -->
+    <div class="row mb-4">
+      <div class="col text-center">
+        <button routerLink="/residence/add" class="btn btn-primary btn-lg shadow-sm">
+          ➕ Nouvelle Résidence
+        </button>
+      </div>
+    </div>
+
+    <!-- Tableau des Résidences -->
+    <div class="table-responsive">
+      <table class="table table-hover table-striped align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th></th>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let r of filterByAddress()">
+            <td>
+              <img *ngIf="r.image" [src]="r.image" width="50" height="50" class="rounded" />
+            </td>
+            <td class="fw-bold">{{ r.id }}</td>
+            <td class="text-uppercase">{{ r.name }}</td>
+            <td>
+              <span *ngIf="r.status == 'Disponible'" class="badge bg-success">✅ {{ r.status }}</span>
+              <span *ngIf="r.status == 'Vendu'" class="badge bg-danger">⛔ {{ r.status }}</span>
+              <span *ngIf="r.status == 'En Construction'" class="badge bg-warning">🚧 {{ r.status }}</span>
+            </td>
+            <td>
+              <button class="btn btn-outline-info btn-sm" (click)="showLocation(r)">
+                📍 Voir Localisation
+              </button>
+              <button class="btn btn-primary btn-sm" [routerLink]="['/details/', r.id]">
+                ℹ️ Détails
+              </button>
+              <button class="btn btn-outline-success btn-sm" [routerLink]="['/apartment/add/', r.id]">
+                🏠 Ajouter Appartement
+              </button>
+              <button class="btn btn-outline-secondary btn-sm" [routerLink]="['/residence/show/', r.id]">
+                🏢 Voir Appartements
+              </button>
+              <button class="btn btn-outline-warning btn-sm" (click)="editResidence(r)">
+                ✏️ Modifier
+              </button>
+              <button class="btn btn-outline-danger btn-sm" (click)="deleteResidence(r.id)">
+                🗑️ Supprimer
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Interface pour les utilisateurs -->
+  <div *ngIf="userRole === 'user' || userRole === ''">
+    <div class="row mb-4">
+      <div class="col text-center">
+        <h3>Explorez nos Résidences</h3>
+        <p>Découvrez toutes les résidences disponibles et trouvez celle qui vous correspond.</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 mb-3" *ngFor="let r of filterByAddress()">
+        <div class="card shadow-sm">
+          <img *ngIf="r.image" [src]="r.image" class="card-img-top" alt="Image résidence" />
+          <div class="card-body">
+            <h5 class="card-title">{{ r.name }}</h5>
+            <p class="card-text">{{ r.address }}</p>
+            <p class="card-text">
+              <span *ngIf="r.status == 'Disponible'" class="badge bg-success">✅ {{ r.status }}</span>
+              <span *ngIf="r.status == 'Vendu'" class="badge bg-danger">⛔ {{ r.status }}</span>
+              <span *ngIf="r.status == 'En Construction'" class="badge bg-warning">🚧 {{ r.status }}</span>
+            </p>
+            <button class="btn btn-primary" [routerLink]="['/details/', r.id]">
+              Voir Détails
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Section affichage de localisation -->
+  <div *ngIf="!hide && selectedResidence" class="mt-5">
+    <h4 class="text-primary">📍 Détails de la Localisation</h4>
+    <p><strong>Nom:</strong> {{ selectedResidence.name }}</p>
+    <p><strong>Adresse:</strong> {{ selectedResidence.address }}</p>
+
+    <div class="ratio ratio-16x9 mt-3">
+      <iframe
+        *ngIf="selectedResidence.address"
+        [src]="'https://www.google.com/maps?q=' + selectedResidence.address + '&output=embed'"
+        width="600"
+        height="450"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+      ></iframe>
+    </div>
+  </div>
+
+  <!-- ✅ Section édition résidence -->
+  <div *ngIf="editMode" class="mt-5">
+    <h4 class="text-warning">✏️ Modifier Résidence</h4>
+
+    <form (ngSubmit)="saveResidence()" #editForm="ngForm">
+      <div class="mb-3">
+        <label for="name" class="form-label">Nom</label>
+        <input
+          type="text"
+          id="name"
+          class="form-control"
+          [(ngModel)]="editedResidence.name"
+          name="name"
+          required
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="address" class="form-label">Adresse</label>
+        <input
+          type="text"
+          id="address"
+          class="form-control"
+          [(ngModel)]="editedResidence.address"
+          name="address"
+          required
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="status" class="form-label">Statut</label>
+        <select
+          id="status"
+          class="form-select"
+          [(ngModel)]="editedResidence.status"
+          name="status"
+          required
+        >
+          <option value="Disponible">Disponible</option>
+          <option value="Vendu">Vendu</option>
+          <option value="En Construction">En Construction</option>
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="image" class="form-label">Image (URL)</label>
+        <input
+          type="text"
+          id="image"
+          class="form-control"
+          [(ngModel)]="editedResidence.image"
+          name="image"
+        />
+      </div>
+
+      <button type="submit" class="btn btn-success">💾 Enregistrer</button>
+      <button type="button" class="btn btn-secondary ms-2" (click)="editMode = false">❌ Annuler</button>
+    </form>
+  </div>
+</div>

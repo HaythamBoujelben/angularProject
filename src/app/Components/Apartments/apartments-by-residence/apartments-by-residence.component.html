@@ -1,0 +1,21 @@
+<div class="container">
+    <h2>Appartements par Résidence</h2>
+    <table class="table table-striped table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>Numéro</th>
+          <th>Étage</th>
+          <th>Catégorie</th>
+          <th>Résidence</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of apartments">
+          <td>{{ a.apartNum }}</td>
+          <td>{{ a.floorNum }}</td>
+          <td>{{ a.category }}</td>
+          <td>{{ getResidence(a.ResidenceId) }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>

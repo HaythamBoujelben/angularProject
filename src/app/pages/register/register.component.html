@@ -1,0 +1,158 @@
+<!-- HTML -->
+<div class="register-container">
+  <div class="form-header">
+    <h2 class="title">Inscription</h2>
+    <p class="subtitle">Créez votre compte en quelques étapes</p>
+  </div>
+
+  <form (ngSubmit)="onRegister()" #registerForm="ngForm" class="register-form">
+    <div class="form-columns">
+      <!-- Colonne gauche -->
+      <div class="form-column">
+        <!-- Informations personnelles -->
+        <div class="section-title">
+          <i class="fas fa-user"></i>
+          <span>Informations personnelles</span>
+        </div>
+
+        <!-- Nom -->
+        <div class="form-group">
+          <label for="name">Nom complet</label>
+          <div class="input-container">
+            <i class="fas fa-user-circle input-icon"></i>
+            <input type="text" id="name" [(ngModel)]="user.name" name="name" required #name="ngModel" placeholder="Entrez votre nom" />
+          </div>
+          <div *ngIf="name.invalid && (name.dirty || name.touched)" class="error-message">
+            <span *ngIf="name.errors?.['required']">Le nom est obligatoire</span>
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+          <label for="email">Email</label>
+          <div class="input-container">
+            <i class="fas fa-envelope input-icon"></i>
+            <input type="email" id="email" [(ngModel)]="user.email" name="email" required #email="ngModel" placeholder="exemple@email.com" />
+          </div>
+          <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error-message">
+            <span *ngIf="email.errors?.['required']">L'email est obligatoire</span>
+            <span *ngIf="email.errors?.['email']">Email invalide</span>
+          </div>
+        </div>
+
+        <!-- Mot de passe -->
+        <div class="form-group">
+          <label for="password">Mot de passe</label>
+          <div class="input-container password-container">
+            <i class="fas fa-lock input-icon"></i>
+            <input [type]="showPassword ? 'text' : 'password'" id="password" [(ngModel)]="user.password" name="password" required minlength="6" #password="ngModel" placeholder="Minimum 6 caractères" />
+            <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
+              <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+            </button>
+          </div>
+          <div *ngIf="password.invalid && (password.dirty || password.touched)" class="error-message">
+            <span *ngIf="password.errors?.['required']">Le mot de passe est obligatoire</span>
+            <span *ngIf="password.errors?.['minlength']">Le mot de passe doit contenir au moins 6 caractères</span>
+          </div>
+        </div>
+
+        <!-- Téléphone -->
+        <div class="form-group">
+          <label for="mobile">Téléphone</label>
+          <div class="input-container">
+            <i class="fas fa-phone input-icon"></i>
+            <input type="tel" id="mobile" [(ngModel)]="user.mobile" name="mobile" pattern="^[0-9]{8,15}$" required #mobile="ngModel" placeholder="+XX XXXXXXXXX" />
+          </div>
+          <div *ngIf="mobile.invalid && (mobile.dirty || mobile.touched)" class="error-message">
+            <span *ngIf="mobile.errors?.['required']">Le numéro de téléphone est obligatoire</span>
+            <span *ngIf="mobile.errors?.['pattern']">Format invalide (8-15 chiffres)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Colonne droite -->
+      <div class="form-column">
+        <div class="section-title">
+          <i class="fas fa-info-circle"></i>
+          <span>Informations supplémentaires</span>
+        </div>
+
+        <!-- Adresse -->
+        <div class="form-group">
+          <label for="adresse">Adresse</label>
+          <div class="input-container">
+            <i class="fas fa-map-marker-alt input-icon"></i>
+            <input type="text" id="adresse" [(ngModel)]="user.adresse" name="adresse" placeholder="Votre adresse complète" />
+          </div>
+        </div>
+
+        <!-- Date de naissance -->
+        <div class="form-group">
+          <label for="dateNaissance">Date de naissance</label>
+          <div class="input-container">
+            <i class="fas fa-calendar-alt input-icon"></i>
+            <input type="date" id="dateNaissance" [(ngModel)]="user.dateNaissance" name="dateNaissance" />
+          </div>
+        </div>
+
+        <!-- Genre -->
+        <div class="form-group">
+          <label for="genre">Genre</label>
+          <div class="input-container">
+            <i class="fas fa-venus-mars input-icon"></i>
+            <select id="genre" [(ngModel)]="user.genre" name="genre" class="form-select">
+              <option value="homme">Homme</option>
+              <option value="femme">Femme</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Pièce d'identité -->
+        <div class="form-group">
+          <label for="pieceIdentite">CIN / Passeport</label>
+          <div class="input-container">
+            <i class="fas fa-id-card input-icon"></i>
+            <input type="text" id="pieceIdentite" [(ngModel)]="user.pieceIdentite" name="pieceIdentite" placeholder="Numéro d'identification" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Photo de profil -->
+    <div class="photo-section">
+      <div class="section-title">
+        <i class="fas fa-camera"></i>
+        <span>Photo de profil</span>
+      </div>
+      
+      <div class="photo-upload">
+        <div class="photo-preview-container">
+          <img [src]="photoPreview || defaultPhoto" alt="Photo de profil" class="photo-preview" />
+          <div class="photo-overlay">
+            <i class="fas fa-camera"></i>
+            <span>Changer la photo</span>
+          </div>
+        </div>
+        
+        <label for="photo" class="upload-button">
+          <i class="fas fa-upload"></i>
+          <span>Choisir une photo</span>
+        </label>
+        <input type="file" id="photo" (change)="onFileSelected($event)" accept="image/*" class="hidden-input" />
+      </div>
+    </div>
+
+    <!-- Bouton d'inscription -->
+    <div class="form-actions">
+      <button type="submit" [disabled]="registerForm.invalid || isSubmitting" class="register-button">
+        <i class="fas fa-user-plus"></i>
+        <span>S'inscrire</span>
+        <div *ngIf="isSubmitting" class="spinner"></div>
+      </button>
+    </div>
+  </form>
+
+  <div class="login-link">
+    <p>Déjà inscrit ? <a routerLink="/login">Connectez-vous</a></p>
+  </div>
+</div>
